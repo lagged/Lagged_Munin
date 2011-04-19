@@ -6,6 +6,8 @@ namespace Lagged\Munin;
  */
 abstract class Plugin
 {
+    protected $autoConf = 'no';
+
     /**
      * @var array $graph Properties of the graph.
      * @see self::__construct(), self::__set(), self::__toString()
@@ -80,6 +82,11 @@ abstract class Plugin
      */
     abstract protected function setUpDataPoints();
 
+    public function getAutoConf()
+    {
+        return $this->autoConf;
+    }
+
     public function getValues()
     {
         if (empty($this->data)) {
@@ -90,6 +97,27 @@ abstract class Plugin
             $response .= "{$point}.value = {$value}\n";
         }
         return $response;
+    }
+
+    /**
+     * For munin.
+     *
+     * @param string $value yes, or no
+     *
+     * @return $this
+     * @throws \InvalidArgumentException
+     */
+    public function setAutoConf($value)
+    {
+        if (!is_bool($value) && $value != 'no' && $value != 'yes') {
+            throw new \InvalidArgumentException("Only yes or no are supported.");
+        }
+        if (!is_bool($value)) {
+            $this->autoConf = $value;
+            return $this;
+        }
+        $this->autoConf = (($value === true)?'yes':'no');
+        return $this;
     }
 
     /**
