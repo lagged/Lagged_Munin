@@ -221,7 +221,7 @@ abstract class Plugin
 
         $response = '';
         foreach ($this->graph as $key => $value) {
-            $response .= "{$key} {$value}\n";
+            $response .= "graph_{$key} {$value}\n";
         }
         foreach ($this->dataPoints as $point) {
             $response .= (string) $point;
