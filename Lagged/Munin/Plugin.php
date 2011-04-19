@@ -1,6 +1,9 @@
 <?php
 namespace Lagged\Munin;
 
+/**
+ * @author Till Klampaeckel <till@php.net>
+ */
 abstract class Plugin
 {
     /**
@@ -124,10 +127,8 @@ abstract class Plugin
         foreach ($this->graph as $key => $value) {
             $response .= "{$key} {$value}\n";
         }
-        foreach ($this->dataPoints as $name => $properties) {
-            foreach ($properties as $prop => $value) {
-                $response .= "{$name}.{$prop} {$value}\n";
-            }
+        foreach ($this->dataPoints as $point) {
+            $response .= (string) $point;
         }
         return $response;
     }
