@@ -41,6 +41,9 @@ namespace Lagged\Munin;
  */
 abstract class Plugin
 {
+    /**
+     * @var string $autoConf For when munin calls ./plugin autoconf
+     */
     protected $autoConf = 'no';
 
     /**
@@ -89,6 +92,17 @@ abstract class Plugin
         $this->scale    = $scale;
     }
 
+    /**
+     * Magically! Set graph properties and do some basic validation!
+     *
+     * @param string $var
+     * @param string $value
+     *
+     * @return void
+     * @throws \OutOfBoundsException     On unknown property.
+     * @throws \UnexpectedValueException In case validation fails.
+     * @uses   self::$graph
+     */
     public function __set($var, $value)
     {
         if (!array_key_exists($var, $this->graph)) {
