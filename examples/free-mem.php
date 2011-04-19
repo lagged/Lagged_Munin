@@ -1,20 +1,31 @@
 #!/usr/bin/env php
 <?php
+/**
+ * @author  Till Klampaeckel <till@php.net>
+ * @license http://www.opensource.org/licenses/bsd-license.php The BSD License
+ */
+
+/**
+ * @desc Set include_path, assuming this is run from a checkout.
+ */
 set_include_path(__DIR__ . '/../:' .  get_include_path());
 
 require_once 'Lagged/Munin.php';
 
+use \Lagged\Munin\DataPoint as DataPoint;
+use \Lagged\Munin\Plugin as Plugin;
+
 /**
  * Example datapoint.
  */
-class FreeMemory extends \Lagged\Munin\DataPoint
+class FreeMemory extends DataPoint
 {
 }
 
 /**
- * Plugin
+ * Example plugin.
  */
-class FreeMemoryPlugin extends \Lagged\Munin\Plugin
+class FreeMemoryPlugin extends Plugin
 {
     public function getMemory()
     {
