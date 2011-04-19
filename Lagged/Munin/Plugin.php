@@ -131,6 +131,21 @@ abstract class Plugin
      */
     abstract protected function setUpDataPoints();
 
+    /**
+     * Add a datapoint, e.g. use this instead of {self::setupDataPoints()}.
+     *
+     * @param \Lagged\Munin\DataPoint $dataPoint
+     *
+     * @return $this
+     */
+    public function addDataPoint(\Lagged\Munin\DataPoint $dataPoint)
+    {
+        $name                    = $dataPoint->getName();
+        $this->dataPoints[$name] = $dataPoint;
+
+        return $this;
+    }
+
     public function getAutoConf()
     {
         return $this->autoConf;
@@ -182,7 +197,9 @@ abstract class Plugin
      */
     public function setValue($point, $value)
     {
-        $this->setUpDataPoints();
+        if (empty($this->dataPoints)) {
+            $this->setUpDataPoints();
+        }
         if (!array_key_exists($point, $this->dataPoints)) {
             throw new \OutOfBoundsException("Unknown datapoint: {$point}");
         }
@@ -198,7 +215,9 @@ abstract class Plugin
      */
     public function __toString()
     {
-        $this->setUpDataPoints();
+        if (empty($this->dataPoints)) {
+            $this->setUpDataPoints();
+        }
 
         $response = '';
         foreach ($this->graph as $key => $value) {
