@@ -40,7 +40,7 @@ class FreeMemoryPlugin extends Plugin
         $freeMemory->min    = 0;
         $freeMemory->colour = 'FF0000';
 
-        $this->dataPoints['freememory'] = $freeMemory;
+        $this->dataPoints[$freeMemory->getName()] = $freeMemory;
     }
 }
 

@@ -75,6 +75,16 @@ abstract class DataPoint
     }
 
     /**
+     * Get this datapoint's name.
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
      * ZOMG Magic!!!11
      *
      * @param string $var   Property name.
