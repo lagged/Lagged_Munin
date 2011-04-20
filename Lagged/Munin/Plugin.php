@@ -132,6 +132,13 @@ abstract class Plugin
     abstract protected function setUpDataPoints();
 
     /**
+     * Implement this in the plugin - it starts the data collection process.
+     *
+     * @see \Lagged\Munin\CliRunner
+     */
+    abstract public function process();
+
+    /**
      * Add a datapoint, e.g. use this instead of {self::setupDataPoints()}.
      *
      * @param \Lagged\Munin\DataPoint $dataPoint

@@ -14,6 +14,7 @@ require_once 'Lagged/Munin.php';
 
 use \Lagged\Munin\DataPoint as DataPoint;
 use \Lagged\Munin\Plugin as Plugin;
+use \Lagged\Munin\CliRunner as CliRunner;
 
 /**
  * Example datapoint.
@@ -27,10 +28,12 @@ class FreeMemory extends DataPoint
  */
 class FreeMemoryPlugin extends Plugin
 {
-    public function getMemory()
+    public function process()
     {
         $cmd = 'free -m -t|grep Total|awk \'{print $4}\'';
-        return trim(shell_exec($cmd));
+        $mem = trim(shell_exec($cmd));
+
+        $this->setValue('freememory', $mem);
     }
 
     protected function setUpDataPoints()
@@ -53,18 +56,4 @@ $plugin = new FreeMemoryPlugin(
 );
 $plugin->setAutoConf(true);
 
-if (isset($argv[1])) {
-    switch ($argv[1]) {
-    case 'config':
-        echo $plugin;
-        break;
-    case 'autoconf':
-        echo $plugin->getAutoConf() . "\n";
-        break;
-    }
-    exit(0);
-}
-
-$plugin->setValue('freememory', $plugin->getMemory());
-echo $plugin->getValues();
-exit(0);
+exit(CliRunner::handle($plugin));

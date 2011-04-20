@@ -14,6 +14,7 @@ require_once 'Lagged/Munin.php';
 
 use \Lagged\Munin\DataPoint as DataPoint;
 use \Lagged\Munin\Plugin as Plugin;
+use \Lagged\Munin\CliRunner as CliRunner;
 
 /**
  * Example datapoint.
@@ -27,10 +28,12 @@ class CurrentLoad extends DataPoint
  */
 class LoadPlugin extends Plugin
 {
-    public function getLoad()
+    public function process()
     {
-        $cmd = 'uptime|awk \'{print $10}\'';
-        return substr(trim(shell_exec($cmd)), 0, -1);
+        $cmd  = 'uptime|awk \'{print $10}\'';
+        $load = substr(trim(shell_exec($cmd)), 0, -1);
+
+        $this->setValue('currentload', $load);
     }
 
     protected function setUpDataPoints()
@@ -55,19 +58,4 @@ $load->type  = 'ABSOLUTE';
 
 $plugin->addDataPoint($load);
 
-
-if (isset($argv[1])) {
-    switch ($argv[1]) {
-    case 'config':
-        echo $plugin;
-        break;
-    case 'autoconf':
-        echo $plugin->getAutoConf() . "\n";
-        break;
-    }
-    exit(0);
-}
-
-$plugin->setValue($load->getName(), $plugin->getLoad());
-echo $plugin->getValues();
-exit(0);
+exit(CliRunner::handle($plugin));
