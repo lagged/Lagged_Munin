@@ -37,3 +37,4 @@
 
 require_once __DIR__ . '/Munin/Plugin.php';
 require_once __DIR__ . '/Munin/DataPoint.php';
+require_once __DIR__ . '/Munin/CliRunner.php';
